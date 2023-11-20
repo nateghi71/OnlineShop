@@ -19,6 +19,14 @@
             </ul>
         </li>
         <hr>
+        <li class="px-4 py-2">
+            <a href="#tag-menu" data-bs-toggle="collapse" class="text-decoration-none text-primary d-flex justify-content-between"> تگ ها <span> + </span></a>
+            <ul class="collapse list-unstyled" id="tag-menu">
+                <li class="mt-3 ps-3"><a class="text-decoration-none text-secondary" href="{{ route('admin.tags.index')}}">تگ ها</a> </li>
+                <li class="mt-3 ps-3"><a class="text-decoration-none text-secondary" href="{{ route('admin.tags.create')}}"> ایجاد تگ</a> </li>
+            </ul>
+        </li>
+        <hr>
     </ul>
 </aside>
 

@@ -5,9 +5,9 @@
 
 @section('content')
     <div class="d-flex justify-content-between m-4">
-        <h5 class="font-weight-bold">لیست دسته بندی ها </h5>
-        <a class="btn btn-sm btn-outline-primary" href="{{ route('admin.categories.create')}}">
-            ایجاد دسته بندی
+        <h5 class="font-weight-bold">لیست تگ ها </h5>
+        <a class="btn btn-sm btn-outline-primary" href="{{ route('admin.tags.create')}}">
+            ایجاد تگ
         </a>
     </div>
     <div>
@@ -17,33 +17,29 @@
             <tr>
                 <th>id</th>
                 <th>نام</th>
-                <th>والد</th>
                 <th>نامک</th>
                 <th>ویرایش</th>
                 <th>حذف</th>
             </tr>
             </thead>
             <tbody>
-            @foreach ($categories as $key => $category)
+            @foreach ($tags as $key => $tag)
                 <tr>
                     <th>
-                        {{ $categories->firstItem() + $key }}
-                    </th>
-                    <th>
-                        <a href="{{route('admin.categories.show' , ['category' => $category])}}" class="text-decoration-none">{{$category->name}}</a>
-                    </th>
-                    <th>
-                        {{$categories->where('id' , $category->parent_id)->first() === null ? '-' : $categories->where('id' , $category->parent_id)->first()->name}}
+                        {{ $tags->firstItem() + $key }}
                     </th>
 
                     <th>
-                        {{$category->slug}}
+                        <a href="{{route('admin.tags.show' , ['tag' => $tag])}}" class="text-decoration-none">{{$tag->name}}</a>
                     </th>
                     <th>
-                        <a href="{{route('admin.categories.edit' , ['category' => $category])}}" class="btn btn-sm btn-outline-primary">ویرایش</a>
+                        {{$tag->slug}}
                     </th>
                     <th>
-                        <form action="{{route('admin.categories.destroy' , ['category' => $category])}}" method="post">
+                        <a href="{{route('admin.tags.edit' , ['tag' => $tag])}}" class="btn btn-sm btn-outline-primary">ویرایش</a>
+                    </th>
+                    <th>
+                        <form action="{{route('admin.tags.destroy' , ['tag' => $tag])}}" method="post">
                             @csrf
                             @method('delete')
                             <button type="submit" class="btn btn-sm btn-outline-danger">حذف</button>
@@ -55,6 +51,6 @@
         </table>
     </div>
 
-    {{$categories->withQueryString()->links()}}
+    {{$tags->withQueryString()->links()}}
 
 @endsection

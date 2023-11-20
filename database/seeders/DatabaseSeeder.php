@@ -16,6 +16,7 @@ use Illuminate\Database\Seeder;
         $this->call([
             AttributeSeeder::class,
             CategorySeeder::class,
+            TagSeeder::class,
         ]);
     }
 }

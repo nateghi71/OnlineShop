@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Attribute;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
-class AttributeController extends Controller
+class TagController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $attributes = Attribute::paginate(10);
-        return view('admin.attributes.index' , compact('attributes'));
+        $tags = Tag::paginate(10);
+        return view('admin.tags.index' , compact('tags'));
     }
 
     /**
@@ -21,7 +21,7 @@ class AttributeController extends Controller
      */
     public function create()
     {
-        return view('admin.attributes.create');
+        return view('admin.tags.create');
     }
 
     /**
@@ -33,8 +33,8 @@ class AttributeController extends Controller
             'name' => 'required|string'
         ]);
 
-        Attribute::create([
-            'name' => $request->name,
+        Tag::create([
+           'name' =>  $request->name,
         ]);
 
         return back();
@@ -43,30 +43,30 @@ class AttributeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Attribute $attribute)
+    public function show(Tag $tag)
     {
-        return view('admin.attributes.show' , compact('attribute'));
+        return view('admin.tags.show' , compact('tag'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Attribute $attribute)
+    public function edit(Tag $tag)
     {
-        return view('admin.attributes.edit' , compact('attribute'));
+        return view('admin.tags.edit' , compact('tag'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Attribute $attribute)
+    public function update(Request $request, Tag $tag)
     {
         $request->validate([
             'name' => 'required|string'
         ]);
 
-        $attribute->update([
-            'name' => $request->name,
+        $tag->update([
+            'name' =>  $request->name,
         ]);
 
         return back();
@@ -75,9 +75,9 @@ class AttributeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Attribute $attribute)
+    public function destroy(Tag $tag)
     {
-        $attribute->delete();
+        $tag->delete();
         return back();
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AttributeController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,4 +19,5 @@ Route::prefix('/admin')-> name('admin.')-> group(function (){
        return view('admin.dashboard');
     });
     Route::resource('attributes' , AttributeController::class);
+    Route::resource('categories' , CategoryController::class);
 });

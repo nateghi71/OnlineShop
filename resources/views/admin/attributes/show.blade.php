@@ -11,7 +11,7 @@
         </a>
     </div>
     <div class="m-5 d-flex justify-content-center">
-        <form action="{{route('admin.attributes.show' , ['attribute' => $attribute->id])}}" method="post" class="w-50">
+        <form action="#" method="post" class="w-50">
             @csrf
             <div class="mb-3">
                 <label class="form-label" for="name">نام</label>

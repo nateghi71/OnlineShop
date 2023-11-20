@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttributeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,7 +13,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
+Route::prefix('/admin')-> name('admin.')-> group(function (){
+    Route::get('/' , function (){
+       return view('admin.dashboard');
+    });
+    Route::resource('attributes' , AttributeController::class);
 });

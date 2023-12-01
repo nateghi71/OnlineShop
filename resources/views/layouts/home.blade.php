@@ -12,7 +12,6 @@
             $('.wrapper').css('min-height', $(document).outerHeight(true) - ($('.header').outerHeight(true) + $('.footer').outerHeight(true)));
         });
     </script>
-    @yield('script')
 </head>
 <body>
     @include('sections.header' , ['title' => 'وبلاگ برنامه نویسی'])
@@ -22,5 +21,6 @@
     </div>
 
     @include('sections.footer')
+    @yield('script')
 </body>
 </html>

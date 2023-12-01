@@ -27,6 +27,14 @@
             </ul>
         </li>
         <hr>
+        <li class="px-4 py-2">
+            <a href="#product-menu" data-bs-toggle="collapse" class="text-decoration-none text-primary d-flex justify-content-between"> محصول ها <span> + </span></a>
+            <ul class="collapse list-unstyled" id="product-menu">
+                <li class="mt-3 ps-3"><a class="text-decoration-none text-secondary" href="{{ route('admin.products.index')}}">محصول ها</a> </li>
+                <li class="mt-3 ps-3"><a class="text-decoration-none text-secondary" href="{{ route('admin.products.create')}}"> ایجاد محصول</a> </li>
+            </ul>
+        </li>
+        <hr>
     </ul>
 </aside>
 

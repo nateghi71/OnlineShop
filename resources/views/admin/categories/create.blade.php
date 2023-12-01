@@ -1,6 +1,11 @@
 @extends('layouts.admin')
 
 @section('script')
+    <script type="module">
+        $('#attribute_ids').select2({
+            placeholder: "ویژگی های موردنظر را انتخاب کنید",
+        });
+    </script>
 @endsection
 
 @section('content')
@@ -29,6 +34,17 @@
                     @endforeach
                 </select>
                 @error('parent_id')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="attribute_ids">ویژگی ها</label>
+                <select class="form-select" name="attribute_ids[]" id="attribute_ids" multiple>
+                    @foreach($attributes as $attribute)
+                        <option value="{{$attribute->id}}">{{$attribute->name}}</option>
+                    @endforeach
+                </select>
+                @error('attributes')
                     <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
             </div>

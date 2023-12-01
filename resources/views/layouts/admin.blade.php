@@ -5,6 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    @yield('headers')
     <title>Document</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script type="module">
@@ -12,7 +13,6 @@
             $('.js-fullHeight').css('min-height', $(document).outerHeight() - ($('.header').outerHeight() + $('.footer').outerHeight()));
         });
     </script>
-    @yield('script')
 </head>
 <body>
 @include('sections.header' , ['title' => 'پیکربندی سایت'])
@@ -29,5 +29,6 @@
 </div>
 
 @include('sections.footer')
+@yield('script')
 </body>
 </html>

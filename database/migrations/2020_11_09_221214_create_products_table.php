@@ -18,7 +18,6 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->string('slug')->unique();
-            $table->string('primary_image');
             $table->text('description');
             $table->boolean('is_active')->default(1);
             $table->unsignedInteger('delivery_amount')->default(0);

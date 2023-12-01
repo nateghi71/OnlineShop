@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+use App\Models\Attribute;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -21,8 +23,9 @@ class CategoryController extends Controller
      */
     public function create()
     {
+        $attributes = Attribute::all();
         $categories = Category::where('parent_id' , 0)->get();
-        return view('admin.categories.create' , compact('categories'));
+        return view('admin.categories.create' , compact('categories' , 'attributes'));
     }
 
     /**
@@ -30,16 +33,20 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+//        dd($request->attribute_ids);
+
         $request->validate([
             'parent_id' => 'required|integer',
             'name' => 'required|string',
+            'attribute_ids' => 'required',
         ]);
 
-        Category::create([
+         $category = Category::create([
             'parent_id' => $request->parent_id,
             'name' => $request->name,
         ]);
 
+        $category->attributes()->attach($request->attribute_ids);
         return back();
     }
 
@@ -56,8 +63,9 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
+        $attributes = Attribute::all();
         $categories = Category::where('parent_id' , 0)->whereNot('id' , $category->id)->get();
-        return view('admin.categories.edit' , compact('category' , 'categories'));
+        return view('admin.categories.edit' , compact('category' , 'categories' , 'attributes'));
     }
 
     /**
@@ -68,6 +76,7 @@ class CategoryController extends Controller
         $request->validate([
             'parent_id' => 'required|integer',
             'name' => 'required|string',
+            'attribute_ids' => 'required',
         ]);
 
         $category->update([
@@ -75,6 +84,8 @@ class CategoryController extends Controller
             'name' => $request->name,
         ]);
 
+        $category->attributes()->detach();
+        $category->attributes()->attach($request->attribute_ids);
         return back();
     }
 

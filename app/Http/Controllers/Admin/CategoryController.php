@@ -46,7 +46,7 @@ class CategoryController extends Controller
             'name' => $request->name,
         ]);
 
-        $category->attributes()->attach($request->attribute_ids);
+        $category->attrs()->attach($request->attribute_ids);
         return back();
     }
 
@@ -84,8 +84,8 @@ class CategoryController extends Controller
             'name' => $request->name,
         ]);
 
-        $category->attributes()->detach();
-        $category->attributes()->attach($request->attribute_ids);
+        $category->attrs()->detach();
+        $category->attrs()->attach($request->attribute_ids);
         return back();
     }
 

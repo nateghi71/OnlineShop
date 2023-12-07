@@ -47,7 +47,7 @@
                     <option value="0">بدون والد</option>
                     @foreach($attributes as $attribute)
                         <option value="{{$attribute->id}}"
-                            {{in_array($attribute->id,$category->attributes()->pluck('id')->toArray()) ? 'selected' : ''}}>
+                            {{in_array($attribute->id,$category->attrs()->pluck('id')->toArray()) ? 'selected' : ''}}>
                             {{$attribute->name}}
                         </option>
                     @endforeach
@@ -57,7 +57,6 @@
                 @enderror
             </div>
             <button type="submit" class="w-100 btn btn-primary mb-4">ویرایش</button>
-
         </form>
     </div>
 

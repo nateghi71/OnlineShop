@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Product extends Model
 {
@@ -39,5 +41,55 @@ class Product extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function scopeFilter(Builder $query)
+    {
+        if (request()->has('attribute')) {
+            foreach (request()->attribute as $attribute) {
+                $query->whereHas('attributeOptions', function ($query) use ($attribute) {
+                    foreach (explode('-', $attribute) as $index => $item) {
+                        if ($index == 0) {
+                            $query->where('value', $item);
+                        } else {
+                            $query->orWhere('value', $item);
+                        }
+                    }
+                });
+            }
+        }
+
+        if (request()->has('sortBy')) {
+            $sortBy = request()->sortBy;
+
+            switch ($sortBy) {
+                case 'max':
+                    $query->orderByDesc(Sku::select('price')->whereColumn('skus.product_id', 'products.id')->orderBy('sale_price', 'desc')->take(1));
+                    break;
+                case 'min':
+                    $query->orderBy(Sku::select('price')->whereColumn('skus.product_id', 'products.id')->orderBy('sale_price', 'desc')->take(1));
+                    break;
+                case 'latest':
+                    $query->latest();
+                    break;
+                case 'oldest':
+                    $query->oldest();
+                    break;
+                default:
+                    $query;
+                    break;
+            }
+        }
+        // dd($query->toSql());
+        return $query;
+    }
+    public function scopeSearch(Builder $query)
+    {
+        $keyword = request()->search;
+        if (request()->has('search') && trim($keyword) != '') {
+            $query->where('name', 'LIKE', '%'. trim($keyword) .'%');
+        }
+
+        return $query;
     }
 }

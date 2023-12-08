@@ -78,7 +78,13 @@
             </ol>
         </nav>
     </div>
-<div class="row px-5" id="first-section">
+    @if(session()->has('errorComment'))
+        <div class="alert alert-danger">{{ session('errorComment') }}</div>
+    @elseif(session()->has('successComment'))
+        <div class="alert alert-success">{{ session('successComment') }}</div>
+    @endif
+
+    <div class="row px-5" id="first-section">
     <div class="col-md-4 p-0 border-end border-opacity-50">
         <div class="text-center my-3">
             <img src="{{url(env('PRODUCT_IMAGES_UPLOAD_PATH')) . '/' .  $product->images()->where('is_primary' , 1)->first()->image }}"
@@ -181,23 +187,78 @@
     </ul>
     <div class="tab-content">
         <div id="description" class="tab-pane active">
-            <p>{{$product->description}}</p>
+            <p class="my-4">{{$product->description}}</p>
         </div>
         <div id="comments" class="tab-pane">
-            <p>Some content in menu 2.</p>
-            {{--            <div class="py-3" id="rate">--}}
-            {{--                <input type="radio" id="star5" name="rate" value="5" class="d-none" />--}}
-            {{--                <label for="star5" title="text" class="fs-3">★</label>--}}
-            {{--                <input type="radio" id="star4" name="rate" value="4" class="d-none" />--}}
-            {{--                <label for="star4" title="text" class="fs-3">★</label>--}}
-            {{--                <input type="radio" id="star3" name="rate" value="3" class="d-none" />--}}
-            {{--                <label for="star3" title="text" class="fs-3">★</label>--}}
-            {{--                <input type="radio" id="star2" name="rate" value="2" class="d-none" />--}}
-            {{--                <label for="star2" title="text" class="fs-3">★</label>--}}
-            {{--                <input type="radio" id="star1" name="rate" value="1" class="d-none" />--}}
-            {{--                <label for="star1" title="text" class="fs-3">★</label>--}}
-            {{--            </div>--}}
+            <div class="d-flex justify-content-center">
+                <div class="col-md-8 my-4">
+                    @foreach($product->approvedComments as $comment)
+                        <div class="bg-body-secondary rounded-3 px-3 py-2 mt-3">
+                            <div class="d-flex justify-content-between border-bottom pb-3">
+                                <div class="">
+                                    <img src="{{ $comment->user->avatar == null ? asset('/files/images/avatar/user.png') : $comment->user->avatar }}"
+                                         width="20" height="20">
+                                    <span class="ps-3">{{ $comment->user->name ?? 'کاربر گرمی'}}</span>
+                                </div>
 
+                                <div dir="ltr">
+                                    @php
+                                         $userRate = \App\Models\ProductRate::where('product_id' , $comment->product->id)->where('user_id' , $comment->user->id)->first()->rate ?? 0;
+                                     @endphp
+                                    <span>
+                                        @foreach(range(1,5) as $i)
+                                            @if($userRate >0)
+                                                <i class="fa fa-star"></i>
+                                            @else
+                                                <i class="fa fa-star-o"></i>
+                                            @endif
+                                            @php $userRate--; @endphp
+                                        @endforeach
+                                    </span><br>
+                                </div>
+                            </div>
+                            <p class="m-3">
+                                {{$comment->text}}
+                            </p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            @if(auth()->check())
+            <div class="d-flex justify-content-center">
+                <form action="{{route('home.comments.store' , ['product' => $product->id])}}" method="post" class="col-md-8 my-4">
+                    @csrf
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label d-flex justify-content-between" for="comment">
+                            دیدگاه :
+                            <div id="rate">
+                                <input type="radio" id="star5" name="rate" value="5" class="d-none" />
+                                <label for="star5" class="fs-3">★</label>
+                                <input type="radio" id="star4" name="rate" value="4" class="d-none" />
+                                <label for="star4" class="fs-3">★</label>
+                                <input type="radio" id="star3" name="rate" value="3" class="d-none" />
+                                <label for="star3"  class="fs-3">★</label>
+                                <input type="radio" id="star2" name="rate" value="2" class="d-none" />
+                                <label for="star2" class="fs-3">★</label>
+                                <input type="radio" id="star1" name="rate" value="1" class="d-none" />
+                                <label for="star1" class="fs-3">★</label>
+                            </div>
+                            @error('rate')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </label>
+                        <textarea type="text" name="comment" id="comment" class="form-control"></textarea>
+                        @error('comment')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="text-end">
+                        <button class="btn btn-primary w-25" type="submit">ارسال</button>
+                    </div>
+                </form>
+            </div>
+            @endif
         </div>
     </div>
 </div>

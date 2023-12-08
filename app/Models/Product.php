@@ -43,6 +43,16 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function approvedComments()
+    {
+        return $this->hasMany(Comment::class)->where('approved' , 1);
+    }
+
+    public function rates()
+    {
+        return $this->hasMany(ProductRate::class);
+    }
+
     public function scopeFilter(Builder $query)
     {
         if (request()->has('attribute')) {

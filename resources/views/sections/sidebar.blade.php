@@ -35,6 +35,43 @@
             </ul>
         </li>
         <hr>
+        <li class="px-4 py-2">
+            <a href="#user-menu" data-bs-toggle="collapse" class="text-decoration-none text-primary d-flex justify-content-between"> کاربران <span> + </span></a>
+            <ul class="collapse list-unstyled" id="user-menu">
+                <li class="mt-3 ps-3"><a class="text-decoration-none text-secondary" href="{{ route('admin.users.index')}}">کاربران</a> </li>
+                <li class="mt-3 ps-3"><a class="text-decoration-none text-secondary" href="{{ route('admin.users.create')}}"> ایجاد کاربر</a> </li>
+            </ul>
+        </li>
+        <hr>
+        <li class="px-4 py-2">
+            <a href="#permission-menu" data-bs-toggle="collapse" class="text-decoration-none text-primary d-flex justify-content-between"> دسترسی ها <span> + </span></a>
+            <ul class="collapse list-unstyled" id="permission-menu">
+                <li class="mt-3 ps-3"><a class="text-decoration-none text-secondary" href="{{ route('admin.permissions.index')}}">دسترسی ها</a> </li>
+                <li class="mt-3 ps-3"><a class="text-decoration-none text-secondary" href="{{ route('admin.permissions.create')}}"> ایجاد دسترسی</a> </li>
+            </ul>
+        </li>
+        <hr>
+        <li class="px-4 py-2">
+            <a href="#role-menu" data-bs-toggle="collapse" class="text-decoration-none text-primary d-flex justify-content-between"> نقش ها <span> + </span></a>
+            <ul class="collapse list-unstyled" id="role-menu">
+                <li class="mt-3 ps-3"><a class="text-decoration-none text-secondary" href="{{ route('admin.roles.index')}}">نقش ها</a> </li>
+                <li class="mt-3 ps-3"><a class="text-decoration-none text-secondary" href="{{ route('admin.roles.create')}}"> ایجاد نقش</a> </li>
+            </ul>
+        </li>
+        <hr>
+        <li class="px-4 py-2">
+            <a href="#comment-menu" data-bs-toggle="collapse" class="text-decoration-none text-primary d-flex justify-content-between"> کامنت ها <span> + </span></a>
+            <ul class="collapse list-unstyled" id="comment-menu">
+                <li class="mt-3 ps-3"><a class="text-decoration-none text-secondary" href="{{ route('admin.comments.index')}}">کامنت ها</a> </li>
+            </ul>
+        </li>
+        <hr>
+        <li class="px-4 py-2">
+            <a href="#rate-menu" data-bs-toggle="collapse" class="text-decoration-none text-primary d-flex justify-content-between">امتیازات <span> + </span></a>
+            <ul class="collapse list-unstyled" id="rate-menu">
+                <li class="mt-3 ps-3"><a class="text-decoration-none text-secondary" href="{{ route('admin.rates.index')}}">امتیازات</a> </li>
+            </ul>
+        </li>
     </ul>
 </aside>
 

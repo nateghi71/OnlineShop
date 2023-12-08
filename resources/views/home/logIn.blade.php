@@ -4,7 +4,7 @@
 @endsection
 
 @section('content')
-    <div class="d-flex justify-content-center pt-5">
+    <div class="d-flex justify-content-center py-5">
         <form action="{{route('login.handle')}}" method="post" class="w-25 bg-light p-4 rounded-4">
             @csrf
             @if(session()->has('status'))

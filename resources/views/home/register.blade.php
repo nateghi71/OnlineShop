@@ -4,7 +4,7 @@
 @endsection
 
 @section('content')
-    <div class="d-flex justify-content-center pt-5">
+    <div class="d-flex justify-content-center py-5">
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -15,12 +15,12 @@
             </div>
         @endif
         <form action="{{route('register.handle')}}" method="post" class="w-25 bg-light p-4 rounded-4">
-           @csrf
+            @csrf
             <div class="mb-3">
                 <label class="form-label" for="name">نام</label>
                 <input type="name" name="name" id="name" class="form-control" />
                 @error('name')
-                    <div class="alert alert-danger">{{ $message }}</div>
+                <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
             </div>
 
@@ -29,7 +29,7 @@
                 <label class="form-label" for="email">ایمیل</label>
                 <input type="email" name="email" id="email" class="form-control" />
                 @error('email')
-                    <div class="alert alert-danger">{{ $message }}</div>
+                <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
             </div>
 
@@ -38,7 +38,7 @@
                 <label class="form-label" for="password">کلمه عبور</label>
                 <input type="password" name="password" id="password" class="form-control" />
                 @error('password')
-                    <div class="alert alert-danger">{{ $message }}</div>
+                <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
             </div>
 

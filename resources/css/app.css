@@ -2,13 +2,13 @@
 @import "select2/dist/css/select2.min.css";
 @import "font-awesome/css/font-awesome.min.css";
 
-/*#rate > label {*/
-/*    color:#ccc;*/
-/*}*/
-/*#rate > input:checked ~ label {*/
-/*    color: #ffc700;*/
-/*}*/
-/*#rate > label:hover,*/
-/*#rate > label:hover ~ label {*/
-/*    color: #deb217;*/
-/*}*/
+#rate > label {
+    color:#ccc;
+}
+#rate > input:checked ~ label {
+    color: #ffc700;
+}
+#rate > label:hover,
+#rate > label:hover ~ label {
+    color: #deb217;
+}

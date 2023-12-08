@@ -14,7 +14,7 @@
         </li>
         <hr>
         <li class="px-4 py-4">
-            <a href="#" class="text-decoration-none text-primary">
+            <a href="{{route('home.profile.wishlist')}}" class="text-decoration-none text-primary">
                 موردعلاقه ها
             </a>
         </li>

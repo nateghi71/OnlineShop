@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Home\CompareController;
 use App\Http\Controllers\Home\ProductController as ProductHomeController;
 use App\Http\Controllers\Admin\ProductImageController;
 use App\Http\Controllers\Admin\SkuController;
@@ -20,6 +21,7 @@ use App\Http\Controllers\Home\LoginAndLogoutController;
 use App\Http\Controllers\Home\passwordResetController;
 use App\Http\Controllers\Home\RegisterController;
 use App\Http\Controllers\Home\UserProfileController;
+use App\Http\Controllers\Home\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -67,6 +69,13 @@ Route::name('home.')->group(function (){
     Route::get('/search/tags/{tag:slug}' , [ProductHomeController::class , 'searchByTag'])->name('product.search.tag');
     Route::post('/products/setPrice/{product}' , [ProductHomeController::class , 'setPrice'])->name('product.setPrice');
     Route::post('/comments/store/{product}' , [CommentHomeController::class , 'store'])->name('comments.store');
+
+    Route::get('/wishlist/{product}' , [WishlistController::class , 'add'])->name('wishlist.add');
+    Route::get('/wishlist/destroy/{product}' , [WishlistController::class , 'destroy'])->name('wishlist.destroy');
+
+    Route::get('/compare/show/{product}' , [CompareController::class , 'showComparePage'])->name('compare.showPage');
+    Route::get('/compare/add/{product}' , [CompareController::class , 'add'])->name('compare.add');
+    Route::get('/compare/destroy/{product}' , [CompareController::class , 'destroy'])->name('compare.destroy');
 });
 
 Route::prefix('profile')->name('home.profile.')->group(function ()
@@ -74,6 +83,7 @@ Route::prefix('profile')->name('home.profile.')->group(function ()
     Route::get('/', [UserProfileController::class, 'index'])->name('index');
     Route::put('/{user}', [UserProfileController::class, 'updateProfile'])->name('update');
     Route::get('/comments', [CommentHomeController::class, 'userComments'])->name('comments');
+    Route::get('/wishlist' , [WishlistController::class , 'showWishlist'])->name('wishlist');
 
 //    Route::get('/comments', [HomeCommentController::class, 'usersProfileIndex'])->name('comments.users_profile.index');
 //    Route::get('/wishlist', [WishlistController::class, 'usersProfileIndex'])->name('wishlist.users_profile.index');

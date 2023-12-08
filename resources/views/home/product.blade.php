@@ -156,8 +156,24 @@
                     <span class="ms-4" id="showPrice"></span>
                 </h5>
                 <div class="my-5">
-                    <button class="btn btn-success mx-3" type="button">افزودن به سبد خرید</button>
-                    <button class="btn btn-info" type="button">مقایسه</button>
+                    <button class="btn btn-success" type="button">
+                        افزودن به سبد خرید
+                    </button>
+                    <a class="btn btn-info"
+                       href="{{route('home.compare.showPage' , ['product' => $product->id])}}">
+                        مقایسه
+                    </a>
+                    @if(auth()->user()->wishlist()->where('id' , $product->id)->exists())
+                        <a class="btn btn-danger"
+                        href="{{route('home.wishlist.destroy' , ['product' => $product->id])}}">
+                            <i class="fa fa-heart-o" aria-hidden="true"></i>
+                        </a>
+                    @else
+                        <a class="btn btn-outline-danger"
+                           href="{{route('home.wishlist.add' , ['product' => $product->id])}}">
+                            <i class="fa fa-heart-o" aria-hidden="true"></i>
+                        </a>
+                    @endif
                 </div>
             </div>
 

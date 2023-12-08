@@ -53,6 +53,11 @@ class Product extends Model
         return $this->hasMany(ProductRate::class);
     }
 
+    public function wishlist()
+    {
+        return $this->belongsToMany(User::class , 'wishlist');
+    }
+
     public function scopeFilter(Builder $query)
     {
         if (request()->has('attribute')) {

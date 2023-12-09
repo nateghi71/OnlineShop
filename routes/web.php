@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\Admin\AttributeOptionController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CommentController;
+use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\ProductRateController;
 use App\Http\Controllers\Home\CartController;
 use App\Http\Controllers\Home\CommentController as CommentHomeController;
@@ -46,7 +47,7 @@ Route::prefix('/admin')-> name('admin.')-> group(function (){
     Route::resource('users' , UserController::class);
     Route::resource('roles' , RoleController::class);
     Route::resource('permissions' , PermissionController::class);
-    Route::resource('posts' , PostController::class);
+    Route::resource('coupons' , CouponController::class);
 
     Route::get('/products/{product}/edit_attributes' , [AttributeOptionController::class , 'edit'])->name('products.edit_attributes');
     Route::get('/products/{product}/edit_images' , [ProductImageController::class , 'edit'])->name('products.edit_images');
@@ -82,6 +83,7 @@ Route::name('home.')->group(function (){
     Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
     Route::delete('/remove-from-cart/{rowId}', [CartController::class, 'remove'])->name('cart.remove');
     Route::put('/cart/{rowId}', [CartController::class, 'update'])->name('cart.update');
+    Route::post('/check-coupon', [CartController::class, 'checkCoupon'])->name('cart.checkCoupon');
 });
 
 Route::prefix('profile')->name('home.profile.')->group(function ()

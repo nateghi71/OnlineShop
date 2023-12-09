@@ -36,6 +36,14 @@
         </li>
         <hr>
         <li class="px-4 py-2">
+            <a href="#coupon-menu" data-bs-toggle="collapse" class="text-decoration-none text-primary d-flex justify-content-between"> کوپن ها <span> + </span></a>
+            <ul class="collapse list-unstyled" id="coupon-menu">
+                <li class="mt-3 ps-3"><a class="text-decoration-none text-secondary" href="{{ route('admin.coupons.index')}}">کوپن ها</a> </li>
+                <li class="mt-3 ps-3"><a class="text-decoration-none text-secondary" href="{{ route('admin.coupons.create')}}"> ایجاد کوپن</a> </li>
+            </ul>
+        </li>
+        <hr>
+        <li class="px-4 py-2">
             <a href="#user-menu" data-bs-toggle="collapse" class="text-decoration-none text-primary d-flex justify-content-between"> کاربران <span> + </span></a>
             <ul class="collapse list-unstyled" id="user-menu">
                 <li class="mt-3 ps-3"><a class="text-decoration-none text-secondary" href="{{ route('admin.users.index')}}">کاربران</a> </li>

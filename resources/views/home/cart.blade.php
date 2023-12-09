@@ -8,6 +8,7 @@
     <script type="module">
         $('#quantity').on('change' , changeCart)
         $('#remove_cart').on('click' , changeCart)
+        $('#couponBtn').on('click' , changeCart)
 
         function changeCart(e)
         {
@@ -23,23 +24,45 @@
                 contentType: false,
                 cache:false,
                 success:function (response){
-                    let result = Object.entries(response);
-                    console.log(response)
-                    console.log(result)
-                    let carts = '';
-                    $('#cart_rows').empty();
-                    if(result.length > 0){
-                        result.forEach(function (item){
-                            carts += createCart(item[0],item[1]);
-                        })
+                    console.log(@json(session('coupon')))
+                    if(response.couponMessage)
+                    {
+                        $('#couponAmount').text(response.couponMessage.couponAmount)
+                        $('#totalPrices').text(response.couponMessage.totalPrice)
+                        $('#totalDeliveries').text(response.couponMessage.totalDelivery)
+                        $('#totalAmount').text(response.couponMessage.totalAmount)
                     }
-                    else{
-                        carts = '<div class="text-center text-danger"> سبد خرید خالی می باشد.</div>';
+                    else
+                    {
+                        let result = Object.entries(response);
+                        console.log(result)
+                        if(result.length > 0)
+                        {
+                            let carts = '';
+                            let totalPrice = 0;
+                            let totalDelivery = 0;
+                            $('#cart_rows').empty();
+                            result.forEach(function (item){
+                                carts += createCart(item[0],item[1]);
+                                totalPrice += item[1]['multiplyPrice']
+                                totalDelivery += item[1]['delivery_amount']
+                                if(item[1]['quantity'] > 1)
+                                    totalDelivery += (item[1]['quantity'] - 1) * item[1]['delivery_amount_per_product']
+                            })
+                            let couponAmount = Number.parseInt($('#couponAmount').text());
+                            let totalAmount = (totalPrice + totalDelivery) - couponAmount;
+                            $('#cart_rows').append(carts)
+                            $('#quantity').on('change' , changeCart)
+                            $('#remove_cart').on('click' , changeCart)
+                            $('#totalPrices').text(totalPrice)
+                            $('#totalDeliveries').text(totalDelivery)
+                            $('#totalAmount').text(totalAmount)
+                        }
+                        else
+                        {
+                            $('#cart_wrapper').html('<div class="text-center text-danger"> سبد خرید خالی می باشد.</div>');
+                        }
                     }
-
-                    $('#cart_rows').append(carts)
-                    $('#quantity').on('change' , changeCart)
-                    $('#remove_cart').on('click' , changeCart)
                 },
                 error:function (xhr, ajaxOptions, thrownError){
                     console.log("error: " + xhr.status)
@@ -55,6 +78,9 @@
                                 cart.name +
                             '</th>' +
                             '<th>' +
+                            cart.price +
+                            '</th>' +
+                            '<th>' +
                                 '<form action="{{route('home.cart.update' , ['rowId' => 'key'])}}" method="post">'.replace("key", key) +
                                     '<input type="hidden" name="_method" value="PUT">'+
                                     '<input type="hidden" name="_token" value="{{ csrf_token() }}">'+
@@ -62,7 +88,7 @@
                                 '</form>' +
                             '</th>' +
                             '<th>' +
-                                cart.price +
+                                cart.multiplyPrice +
                             '</th>' +
                             '<th>' +
                                 '<form action="{{route('home.cart.remove' , ['rowId' => 'key'])}}" method="post">'.replace("key", key) +
@@ -80,14 +106,26 @@
 @endsection
 
 @section('content')
-    @if(session()->has('cart') && count(session()->get('cart')) > 0)
-        <div class="p-4">
+    <div id="cart_wrapper" class="p-4">
+        @if(session()->has('cart') && count(session()->get('cart')) > 0)
             <table class="table table-bordered text-center">
+                <thead>
+                <tr>
+                    <th>نام</th>
+                    <th>فی</th>
+                    <th>تعداد</th>
+                    <th>قیمت</th>
+                    <th>حذف</th>
+                </tr>
+                </thead>
                 <tbody id="cart_rows">
                 @foreach(session()->get('cart') as $key => $cartItem)
                     <tr>
                         <th>
                             {{$cartItem['name']}}
+                        </th>
+                        <th>
+                            {{$cartItem['price']}}
                         </th>
                         <th>
                             <form action="{{route('home.cart.update' , ['rowId' => $key])}}" method="post">
@@ -97,7 +135,7 @@
                             </form>
                         </th>
                         <th>
-                            {{$cartItem['price']}}
+                            {{$cartItem['multiplyPrice']}}
                         </th>
                         <th>
                             <form action="{{route('home.cart.remove' , ['rowId' => $key])}}" method="post">
@@ -110,8 +148,86 @@
                 @endforeach
                 </tbody>
             </table>
-        </div>
-    @else
-        <div class="pt-4 text-center text-danger"> سبد خرید خالی می باشد.</div>
-    @endif
+            <hr class="mt-5">
+            <div class="px-5 mt-5">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <form action="{{route('home.cart.checkCoupon')}}" method="post" class="bg-body-tertiary p-3 rounded-5">
+                            @csrf
+                            <div class="mb-3">
+                                <label class="form-label" for="code">کوپن</label>
+                                <input type="text" name="code" id="code" class="form-control"
+                                value="{{session()->has('coupon') ? session('coupon')['code'] : ''}}"/>
+                                @error('code')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <button id="couponBtn" type="button" class="btn btn-primary mb-4">اعمال</button>
+                        </form>
+                    </div>
+                    <div class="bg-body-tertiary rounded-5">
+                        <div class="p-3 d-flex justify-content-between border-bottom">
+                            <span>مجموع قیمت ها : </span>
+                            <span id="totalPrices" class="text-danger ms-5">
+                                @php
+                                    $totalPrices = 0;
+                                    foreach (session()->get('cart') as $cart){
+                                        $totalPrices += $cart['multiplyPrice'];
+                                    }
+                                @endphp
+                                {{$totalPrices}}
+                            </span>
+                        </div>
+                        <div class="p-3 d-flex justify-content-between border-bottom">
+                            <span>مجموع هزینه ارسال : </span>
+                            <span id="totalDeliveries" class="text-danger ms-5">
+                                @php
+                                    $totalDelivery = 0;
+                                    foreach (session()->get('cart') as $cart){
+                                        if($cart['quantity'] > 1){
+                                            $totalDelivery += (($cart['quantity'] - 1) * $cart['delivery_amount_per_product']);
+                                        }
+                                        $totalDelivery += $cart['delivery_amount'];
+                                    }
+                                @endphp
+                                {{$totalDelivery}}
+                            </span>
+                        </div>
+
+                        <div class="p-3 d-flex justify-content-between border-bottom">
+                            <span>مبلغ کوپن : </span>
+                            <span id="couponAmount" class="text-danger ms-5">
+                                @if(session()->has('coupon'))
+                                    {{session('coupon')['amount']}}
+                                @else
+                                    0
+                                @endif
+                            </span>
+                        </div>
+
+                        <div class="p-3 d-flex justify-content-between border-bottom">
+                            <span>جمع کل :</span>
+                            <span id="totalAmount" class="text-danger ms-5">
+                                @if(session()->has('coupon'))
+                                    {{($totalPrices + $totalDelivery) - session('coupon')['amount']}}
+                                @else
+                                    {{$totalPrices + $totalDelivery}}
+                                @endif
+
+                            </span>
+                        </div>
+                        <div class="p-3 text-center">
+                            <form action="" method="post">
+                                @csrf
+                                <input type="hidden" value="" name="">
+                                <button type="submit" class="btn btn-primary">ادامه فرآیند خرید</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @else
+            <div class="text-center text-danger"> سبد خرید خالی می باشد.</div>
+        @endif
+    </div>
 @endsection

@@ -22,6 +22,7 @@ use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\LoginAndLogoutController;
 use App\Http\Controllers\Home\passwordResetController;
 use App\Http\Controllers\Home\RegisterController;
+use App\Http\Controllers\Home\UserAdressController;
 use App\Http\Controllers\Home\UserProfileController;
 use App\Http\Controllers\Home\WishlistController;
 use Illuminate\Support\Facades\Route;
@@ -84,6 +85,7 @@ Route::name('home.')->group(function (){
     Route::delete('/remove-from-cart/{rowId}', [CartController::class, 'remove'])->name('cart.remove');
     Route::put('/cart/{rowId}', [CartController::class, 'update'])->name('cart.update');
     Route::post('/check-coupon', [CartController::class, 'checkCoupon'])->name('cart.checkCoupon');
+    Route::get('/check-out', [CartController::class, 'checkout'])->name('cart.checkout');
 });
 
 Route::prefix('profile')->name('home.profile.')->group(function ()
@@ -92,6 +94,11 @@ Route::prefix('profile')->name('home.profile.')->group(function ()
     Route::put('/{user}', [UserProfileController::class, 'updateProfile'])->name('update');
     Route::get('/comments', [CommentHomeController::class, 'userComments'])->name('comments');
     Route::get('/wishlist' , [WishlistController::class , 'showWishlist'])->name('wishlist');
+    Route::get('/addresses' , [UserAdressController::class , 'index'])->name('addresses.index');
+    Route::post('/addresses' , [UserAdressController::class , 'store'])->name('addresses.store');
+    Route::delete('/addresses/{user_address}' , [UserAdressController::class , 'destroy'])->name('addresses.destroy');
+    Route::get('/addresses/{user_address}/edit' , [UserAdressController::class , 'edit'])->name('addresses.edit');
+    Route::put('/addresses/{user_address}' , [UserAdressController::class , 'update'])->name('addresses.update');
 
 //    Route::get('/comments', [HomeCommentController::class, 'usersProfileIndex'])->name('comments.users_profile.index');
 //    Route::get('/wishlist', [WishlistController::class, 'usersProfileIndex'])->name('wishlist.users_profile.index');

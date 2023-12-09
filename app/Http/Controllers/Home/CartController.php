@@ -106,4 +106,9 @@ class CartController extends Controller
         return ['couponMessage' => ['couponAmount' => $couponAmount ,'totalDelivery' => $totalDelivery ,
             'totalPrice' => $totalPrice ,'totalAmount' => $totalAmount , 'message' => 'کوپن قابل استفاده نیست.']];
     }
+
+    public function checkout()
+    {
+        return view('home.checkout');
+    }
 }

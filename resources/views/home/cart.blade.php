@@ -217,11 +217,7 @@
                             </span>
                         </div>
                         <div class="p-3 text-center">
-                            <form action="" method="post">
-                                @csrf
-                                <input type="hidden" value="" name="">
-                                <button type="submit" class="btn btn-primary">ادامه فرآیند خرید</button>
-                            </form>
+                            <a href="{{route('home.cart.checkout')}}" class="text-decoration-none btn btn-primary">ادامه فرآیند خرید</a>
                         </div>
                     </div>
                 </div>

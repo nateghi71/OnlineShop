@@ -8,7 +8,7 @@
         </li>
         <hr>
         <li class="px-4 py-4">
-            <a href="" class="text-decoration-none text-primary">
+            <a href="{{route('home.profile.addresses.index')}}" class="text-decoration-none text-primary">
                 ادرس ها
             </a>
         </li>

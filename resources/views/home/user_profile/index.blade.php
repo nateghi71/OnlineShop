@@ -31,24 +31,24 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label" for="password">گذرواژه پیشین</label>
-                        <input type="password" name="password" value="" id="password" class="form-control @error('password') is-invalid @enderror" />
+                        <label class="form-label" for="password_old">گذرواژه پیشین</label>
+                        <input type="password_old" name="password_old" value="" id="password" class="form-control @error('password') is-invalid @enderror" />
                         @error('password')
                         <div class="alert alert-danger">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label" for="password">گذرواژه جدید</label>
-                        <input type="password" name="password" value="" id="password" class="form-control @error('password') is-invalid @enderror" />
+                        <label class="form-label" for="password_new">گذرواژه جدید</label>
+                        <input type="password" name="password_new" value="" id="password_new" class="form-control @error('password') is-invalid @enderror" />
                         @error('password')
                         <div class="alert alert-danger">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label" for="password">گذرواژه جدید</label>
-                        <input type="password" name="password" value="" id="password" class="form-control @error('password') is-invalid @enderror" />
+                        <label class="form-label" for="password_new_confirmation">گذرواژه جدید</label>
+                        <input type="password" name="password_new_confirmation" value="" id="password_new_confirmation" class="form-control @error('password') is-invalid @enderror" />
                         @error('password')
                         <div class="alert alert-danger">{{ $message }}</div>
                         @enderror

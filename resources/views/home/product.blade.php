@@ -24,8 +24,11 @@
                 success:function (response){
                     if(response.exist)
                     {
+                        $('#cartBtn').attr('disabled' , false)
                         $('#quantity').attr('max' , response.quantity)
                         $('#quantity').val(1);
+                        $('#sku_id').val(response.sku_id);
+
                         if(response.is_sale)
                         {
                             priceProduct = response.sale_price;
@@ -47,6 +50,7 @@
                         $('#quantity').val(0);
                         priceProduct = response.state;
                         $('#showPrice').html('<span>' + response.state + '</span>')
+                        $('#cartBtn').attr('disabled' , true)
                     }
                 },
                 error:function (xhr, ajaxOptions, thrownError){
@@ -144,10 +148,15 @@
                     </select>
                 </diV>
             @endforeach
+        </form>
 
+        <form action="{{route('home.cart.add')}}" method="post">
+            @csrf
             <div class="col-md-3 mb3">
                 <label class="form-label">تعداد :</label>
                 <input class="form-control" type="number" name="quantity" id="quantity" max="5" min="1" />
+                <input type="hidden" name="product_id" value="{{$product->id}}"/>
+                <input type="hidden" name="sku_id" id="sku_id"/>
             </div>
 
             <div class="d-flex justify-content-between">
@@ -156,28 +165,28 @@
                     <span class="ms-4" id="showPrice"></span>
                 </h5>
                 <div class="my-5">
-                    <button class="btn btn-success" type="button">
+                    <button id="cartBtn" class="btn btn-success" type="submit">
                         افزودن به سبد خرید
                     </button>
                     <a class="btn btn-info"
                        href="{{route('home.compare.showPage' , ['product' => $product->id])}}">
                         مقایسه
                     </a>
-                    @if(auth()->user()->wishlist()->where('id' , $product->id)->exists())
-                        <a class="btn btn-danger"
-                        href="{{route('home.wishlist.destroy' , ['product' => $product->id])}}">
-                            <i class="fa fa-heart-o" aria-hidden="true"></i>
-                        </a>
-                    @else
-                        <a class="btn btn-outline-danger"
-                           href="{{route('home.wishlist.add' , ['product' => $product->id])}}">
-                            <i class="fa fa-heart-o" aria-hidden="true"></i>
-                        </a>
-                    @endif
+{{--                    @if(auth()->user()->wishlist()->where('id' , $product->id)->exists())--}}
+{{--                        <a class="btn btn-danger"--}}
+{{--                        href="{{route('home.wishlist.destroy' , ['product' => $product->id])}}">--}}
+{{--                            <i class="fa fa-heart-o" aria-hidden="true"></i>--}}
+{{--                        </a>--}}
+{{--                    @else--}}
+{{--                        <a class="btn btn-outline-danger"--}}
+{{--                           href="{{route('home.wishlist.add' , ['product' => $product->id])}}">--}}
+{{--                            <i class="fa fa-heart-o" aria-hidden="true"></i>--}}
+{{--                        </a>--}}
+{{--                    @endif--}}
                 </div>
             </div>
-
         </form>
+
 
     <div class="ms-4">
         <span>تگ ها : </span>

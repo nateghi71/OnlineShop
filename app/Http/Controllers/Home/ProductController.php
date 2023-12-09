@@ -59,11 +59,11 @@ class ProductController extends Controller
         {
             if($sku->sale_price !== null && $sku->date_on_sale_from < Carbon::now() && $sku->date_on_sale_to > Carbon::now())
             {
-                return ['exist' => true , 'is_sale' => true , 'quantity'=> $sku->quantity, 'price'=> $sku->price , 'sale_price'=> $sku->sale_price];
+                return ['exist' => true , 'is_sale' => true , 'quantity'=> $sku->quantity, 'price'=> $sku->price , 'sale_price'=> $sku->sale_price ,'sku_id' => $sku->id];
             }
             else
             {
-                return ['exist' => true , 'is_sale' => false ,'quantity'=> $sku->quantity, 'price'=> $sku->price , 'sale_price'=> $sku->sale_price];
+                return ['exist' => true , 'is_sale' => false ,'quantity'=> $sku->quantity, 'price'=> $sku->price , 'sale_price'=> $sku->sale_price ,'sku_id' => $sku->id];
             }
         }
         else

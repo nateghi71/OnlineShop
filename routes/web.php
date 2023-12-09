@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AttributeOptionController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\ProductRateController;
+use App\Http\Controllers\Home\CartController;
 use App\Http\Controllers\Home\CommentController as CommentHomeController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PostController;
@@ -76,6 +77,11 @@ Route::name('home.')->group(function (){
     Route::get('/compare/show/{product}' , [CompareController::class , 'showComparePage'])->name('compare.showPage');
     Route::get('/compare/add/{product}' , [CompareController::class , 'add'])->name('compare.add');
     Route::get('/compare/destroy/{product}' , [CompareController::class , 'destroy'])->name('compare.destroy');
+
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::delete('/remove-from-cart/{rowId}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::put('/cart/{rowId}', [CartController::class, 'update'])->name('cart.update');
 });
 
 Route::prefix('profile')->name('home.profile.')->group(function ()

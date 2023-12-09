@@ -22,6 +22,20 @@
                     </li>
                 @endforeach
             </ul>
+            @if(url()->current() !== route('home.cart.index'))
+                <div>
+                    <a href="{{route('home.cart.index')}}" class="pe-5 text-decoration-none text-white">
+                        سبد خرید
+                        <span>
+                            @if(session()->has('cart'))
+                                ({{count(session('cart'))}})
+                            @else
+                                (0)
+                            @endif
+                        </span>
+                    </a>
+                </div>
+            @endif
         </div>
     </div>
 </nav>

@@ -152,7 +152,7 @@
             <div class="px-5 mt-5">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <form action="{{route('home.cart.checkCoupon')}}" method="post" class="bg-body-tertiary p-3 rounded-5">
+                        <form action="{{route('home.cart.applyCoupon')}}" method="post" class="bg-body-tertiary p-3 rounded-5">
                             @csrf
                             <div class="mb-3">
                                 <label class="form-label" for="code">کوپن</label>
@@ -169,28 +169,13 @@
                         <div class="p-3 d-flex justify-content-between border-bottom">
                             <span>مجموع قیمت ها : </span>
                             <span id="totalPrices" class="text-danger ms-5">
-                                @php
-                                    $totalPrices = 0;
-                                    foreach (session()->get('cart') as $cart){
-                                        $totalPrices += $cart['multiplyPrice'];
-                                    }
-                                @endphp
-                                {{$totalPrices}}
+                                {{totalPrice()}}
                             </span>
                         </div>
                         <div class="p-3 d-flex justify-content-between border-bottom">
                             <span>مجموع هزینه ارسال : </span>
                             <span id="totalDeliveries" class="text-danger ms-5">
-                                @php
-                                    $totalDelivery = 0;
-                                    foreach (session()->get('cart') as $cart){
-                                        if($cart['quantity'] > 1){
-                                            $totalDelivery += (($cart['quantity'] - 1) * $cart['delivery_amount_per_product']);
-                                        }
-                                        $totalDelivery += $cart['delivery_amount'];
-                                    }
-                                @endphp
-                                {{$totalDelivery}}
+                                {{totalDelivery()}}
                             </span>
                         </div>
 
@@ -209,9 +194,9 @@
                             <span>جمع کل :</span>
                             <span id="totalAmount" class="text-danger ms-5">
                                 @if(session()->has('coupon'))
-                                    {{($totalPrices + $totalDelivery) - session('coupon')['amount']}}
+                                    {{(totalPrice() + totalDelivery()) - session('coupon')['amount']}}
                                 @else
-                                    {{$totalPrices + $totalDelivery}}
+                                    {{totalPrice() + totalDelivery()}}
                                 @endif
 
                             </span>

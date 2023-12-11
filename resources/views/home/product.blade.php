@@ -28,7 +28,7 @@
                         $('#quantity').attr('max' , response.quantity)
                         $('#quantity').val(1);
                         $('#sku_id').val(response.sku_id);
-
+                        console.log(response.sku_id)
                         if(response.is_sale)
                         {
                             priceProduct = response.sale_price;

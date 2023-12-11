@@ -34,6 +34,8 @@ class CartController extends Controller
         } else {
             $cart[$rowId] = [
                 "name" => $product->name,
+                "sku_id" => $sku->id,
+                "product_id" => $product->id,
                 "quantity" => $request->quantity,
                 "price" => $sku->isSale ? $sku->sale_price : $sku->price,
                 "delivery_amount" => $product->delivery_amount,
@@ -68,7 +70,7 @@ class CartController extends Controller
         return session()->get('cart');
     }
 
-    public function checkCoupon(Request $request)
+    public function applyCoupon(Request $request)
     {
         if($request->code === null)
         {
@@ -76,35 +78,20 @@ class CartController extends Controller
         }
 
         $couponAmount = 0;
-        $totalPrice = 0;
-        $totalDelivery = 0;
-        foreach (session()->get('cart') as $cart){
-            $totalPrice += $cart['multiplyPrice'];
+        $totalAmount = totalPrice() + totalDelivery();
+
+
+        $result = checkCoupon($request->code);
+
+        if (array_key_exists('error', $result)) {
+            return ['couponMessage' => ['couponAmount' => $couponAmount ,'totalDelivery' => totalDelivery() ,
+                'totalPrice' => totalPrice() ,'totalAmount' => $totalAmount , 'message' => $result['error']]];
         }
 
-        foreach (session()->get('cart') as $cart){
-            if($cart['quantity'] > 1){
-                $totalDelivery += (($cart['quantity'] - 1) * $cart['delivery_amount_per_product']);
-            }
-            $totalDelivery += $cart['delivery_amount'];
-        }
-        $totalAmount = $totalPrice + $totalDelivery;
-
-        $coupon = Coupon::where('code', $request->code)->where('expired_at', '>', Carbon::now())->first();
-
-        if($coupon != null)
-        {
-            $couponAmount = ((($totalPrice + $totalDelivery) * $coupon->percentage) / 100) > $coupon->max_percentage_amount ? $coupon->max_percentage_amount : ((($totalPrice + $totalDelivery) * $coupon->percentage) / 100);
-
-            $totalAmount = ($totalPrice + $totalDelivery) - $couponAmount;
-            session()->put('coupon', ['id' => $coupon->id, 'code' => $coupon->code , 'amount' => $couponAmount]);
-            return ['couponMessage' => ['couponAmount' => $couponAmount ,'totalDelivery' => $totalDelivery ,
-                'totalPrice' => $totalPrice ,'totalAmount' => $totalAmount , 'message' => 'کوپن اعمال شد.']];
-        }
-
-        session()->forget('coupon');
-        return ['couponMessage' => ['couponAmount' => $couponAmount ,'totalDelivery' => $totalDelivery ,
-            'totalPrice' => $totalPrice ,'totalAmount' => $totalAmount , 'message' => 'کوپن قابل استفاده نیست.']];
+        $couponAmount = session()->get('coupon.amount');
+        $totalAmount = (totalPrice() + totalDelivery()) - $couponAmount;
+        return ['couponMessage' => ['couponAmount' => $couponAmount ,'totalDelivery' => totalDelivery() ,
+            'totalPrice' => totalPrice() ,'totalAmount' => $totalAmount , 'message' => 'کوپن اعمال شد.']];
     }
 
     public function checkout()

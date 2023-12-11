@@ -53,6 +53,11 @@ class Product extends Model
         return $this->hasMany(ProductRate::class);
     }
 
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
     public function wishlist()
     {
         return $this->belongsToMany(User::class , 'wishlist');

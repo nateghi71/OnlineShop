@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Home\CompareController;
+use App\Http\Controllers\Home\PaymentController;
 use App\Http\Controllers\Home\ProductController as ProductHomeController;
 use App\Http\Controllers\Admin\ProductImageController;
 use App\Http\Controllers\Admin\SkuController;
@@ -84,8 +85,12 @@ Route::name('home.')->group(function (){
     Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
     Route::delete('/remove-from-cart/{rowId}', [CartController::class, 'remove'])->name('cart.remove');
     Route::put('/cart/{rowId}', [CartController::class, 'update'])->name('cart.update');
-    Route::post('/check-coupon', [CartController::class, 'checkCoupon'])->name('cart.checkCoupon');
+    Route::post('/apply-coupon', [CartController::class, 'applyCoupon'])->name('cart.applyCoupon');
     Route::get('/check-out', [CartController::class, 'checkout'])->name('cart.checkout');
+
+    Route::get('/payment', [PaymentController::class, 'payment'])->name('payment.payment');
+    Route::get('/payment_Verify_pay', [PaymentController::class, 'payVerify'])->name('payment.verify.pay');
+    Route::post('/payment_Verify_idPay', [PaymentController::class, 'idPayVerify'])->name('payment.verify.idPay');
 });
 
 Route::prefix('profile')->name('home.profile.')->group(function ()

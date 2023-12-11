@@ -1,6 +1,12 @@
 @extends('layouts.home')
 
 @section('script')
+    <script type="module">
+        $('#address_input').val($('#select_address').val())
+        $('#select_address').on('change' , function (){
+            $('#address_input').val($(this).val())
+        })
+    </script>
 @endsection
 
 @section('content')
@@ -8,6 +14,9 @@
         <div class="ps-4 p-3">
             <h4 class="border-bottom pb-3">ادرس تحویل سفارش:</h4>
         </div>
+        @if(session()->has('error'))
+            <div class="alert alert-danger">{{session('error')}}</div>
+        @endif
         <div class="row p-3">
             <div class="col-md-3 mb-3 ">
                 <label class="form-label fs-5" for="select_address">انتخاب ادرس تحویل سفارش:</label>
@@ -101,28 +110,13 @@
             <div class="p-3 d-flex justify-content-between border-bottom">
                 <span>مجموع قیمت ها : </span>
                 <span id="totalPrices" class="text-danger ms-5">
-                    @php
-                        $totalPrices = 0;
-                        foreach (session()->get('cart') as $cart){
-                            $totalPrices += $cart['multiplyPrice'];
-                        }
-                    @endphp
-                    {{$totalPrices}}
+                    {{totalPrice()}}
                 </span>
             </div>
             <div class="p-3 d-flex justify-content-between border-bottom">
                 <span>مجموع هزینه ارسال : </span>
                 <span id="totalDeliveries" class="text-danger ms-5">
-                    @php
-                        $totalDelivery = 0;
-                        foreach (session()->get('cart') as $cart){
-                            if($cart['quantity'] > 1){
-                                $totalDelivery += (($cart['quantity'] - 1) * $cart['delivery_amount_per_product']);
-                            }
-                            $totalDelivery += $cart['delivery_amount'];
-                        }
-                    @endphp
-                    {{$totalDelivery}}
+                    {{totalDelivery()}}
                 </span>
             </div>
 
@@ -141,43 +135,47 @@
                 <span>جمع کل :</span>
                 <span id="totalAmount" class="text-danger ms-5">
                     @if(session()->has('coupon'))
-                        {{($totalPrices + $totalDelivery) - session('coupon')['amount']}}
+                        {{(totalPrice() + totalDelivery()) - session('coupon')['amount']}}
                     @else
-                        {{$totalPrices + $totalDelivery}}
+                        {{totalPrice() + totalDelivery()}}
                     @endif
                 </span>
             </div>
-            <div class="p-3">
-                <div class="mb-4">
-                    <div class="form-check pb-3">
-                        <input class="form-check-input" type="radio" name="payment_method" value="zarinpal" id="zarinpal" checked>
-                        <label class="form-check-label" for="zarinpal">
-                            درگاه پرداخت زرین پال
-                        </label>
-                    </div>
-                    <p>
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده
-                        از
-                        طراحان گرافیک است.
-                    </p>
-                </div>
-                <div class="mb-4">
-                    <div class="form-check pb-3">
-                        <input class="form-check-input" type="radio" name="payment_method" value="pay" id="pay">
-                        <label class="form-check-label" for="pay">
-                            درگاه پرداخت پی
-                        </label>
-                    </div>
-                    <p>
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده
-                        از
-                        طراحان گرافیک است.
-                    </p>
-                </div>
-            </div>
 
-            <div class="p-3 text-center">
-                <a href="{{route('home.cart.checkout')}}" class="text-decoration-none btn btn-primary">سفارش</a>
+                <div class="p-3">
+                    <form action="{{route('home.payment.payment')}}">
+                    <div class="mb-4">
+                        <div class="form-check pb-3">
+                            <input class="form-check-input" type="radio" name="payment_method" value="IdPay" id="IdPay" checked>
+                            <label class="form-check-label" for="IdPay">
+                                درگاه پرداخت ای دی پی
+                            </label>
+                        </div>
+                        <p>
+                            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده
+                            از
+                            طراحان گرافیک است.
+                        </p>
+                    </div>
+                    <div class="mb-4">
+                        <div class="form-check pb-3">
+                            <input class="form-check-input" type="radio" name="payment_method" value="pay" id="pay">
+                            <label class="form-check-label" for="pay">
+                                درگاه پرداخت پی
+                            </label>
+                        </div>
+                        <p>
+                            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده
+                            از
+                            طراحان گرافیک است.
+                        </p>
+                    </div>
+
+                    <input type="hidden" name="address_id" id="address_input">
+                    <div class="p-3 text-center">
+                        <button type="submit" class="btn btn-primary">سفارش</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

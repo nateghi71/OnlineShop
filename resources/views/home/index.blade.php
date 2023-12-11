@@ -4,6 +4,9 @@
 @endsection
 
 @section('content')
+    @if(session()->has('error'))
+        <div class="alert alert-danger">{{session('error')}}</div>
+    @endif
     @foreach($categories->Where('parent_id' ,'!==', 0) as $category)
     <div class="row">
         <div class="col-md-12 my-3 mx-5">

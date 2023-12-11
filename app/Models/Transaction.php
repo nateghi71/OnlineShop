@@ -5,20 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserAddress extends Model
+class Transaction extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title','address','cellphone','postal_code','user_id','province_id','city_id','longitude','latitude'];
+    protected $fillable = ['user_id','order_id','amount','ref_id','token','description','gateway_name','status'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-
-    public function orders()
+    public function order()
     {
-        return $this->hasMany(Order::class);
+        return $this->belongsTo(Order::class);
     }
-
 }

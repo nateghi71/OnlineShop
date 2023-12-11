@@ -6,8 +6,8 @@
 
 @section('script')
     <script type="module">
-        $('#quantity').on('change' , changeCart)
-        $('#remove_cart').on('click' , changeCart)
+        $('[id^=quantity-]').on('change' , changeCart)
+        $('[id^=remove_cart-]').on('click' , changeCart)
         $('#couponBtn').on('click' , changeCart)
 
         function changeCart(e)
@@ -49,11 +49,13 @@
                                 if(item[1]['quantity'] > 1)
                                     totalDelivery += (item[1]['quantity'] - 1) * item[1]['delivery_amount_per_product']
                             })
+
                             let couponAmount = Number.parseInt($('#couponAmount').text());
                             let totalAmount = (totalPrice + totalDelivery) - couponAmount;
                             $('#cart_rows').append(carts)
-                            $('#quantity').on('change' , changeCart)
-                            $('#remove_cart').on('click' , changeCart)
+                            $('[id^=quantity-]').on('change' , changeCart)
+                            $('[id^=remove_cart-]').on('click' , changeCart)
+
                             $('#totalPrices').text(totalPrice)
                             $('#totalDeliveries').text(totalDelivery)
                             $('#totalAmount').text(totalAmount)
@@ -84,7 +86,7 @@
                                 '<form action="{{route('home.cart.update' , ['rowId' => 'key'])}}" method="post">'.replace("key", key) +
                                     '<input type="hidden" name="_method" value="PUT">'+
                                     '<input type="hidden" name="_token" value="{{ csrf_token() }}">'+
-                                    '<input id="quantity" type="number" name="quantity" value="'+ cart.quantity +'" class="form-control">' +
+                                    '<input id="quantity-'+ key +'" type="number" name="quantity" value="'+ cart.quantity +'" class="form-control">' +
                                 '</form>' +
                             '</th>' +
                             '<th>' +
@@ -94,7 +96,7 @@
                                 '<form action="{{route('home.cart.remove' , ['rowId' => 'key'])}}" method="post">'.replace("key", key) +
                                     '<input type="hidden" name="_method" value="DELETE">'+
                                     '<input type="hidden" name="_token" value="{{ csrf_token() }}">'+
-                                    '<button id="remove_cart" type="button" class="btn btn-link text-danger text-decoration-none">X</button>' +
+                                    '<button id="remove_cart-'+ key +'" type="button" class="btn btn-link text-danger text-decoration-none">X</button>' +
                                 '</form>' +
                             '</th>' +
                         '</tr>';
@@ -131,7 +133,7 @@
                             <form action="{{route('home.cart.update' , ['rowId' => $key])}}" method="post">
                                 @csrf
                                 @method('PUT')
-                                <input id="quantity" type="number" name="quantity" value="{{$cartItem['quantity']}}" class="form-control">
+                                <input id="quantity-{{$key}}" type="number" name="quantity" value="{{$cartItem['quantity']}}" class="form-control">
                             </form>
                         </th>
                         <th>
@@ -141,7 +143,7 @@
                             <form action="{{route('home.cart.remove' , ['rowId' => $key])}}" method="post">
                                 @csrf
                                 @method('delete')
-                                <button id="remove_cart" type="button" class="btn btn-link text-danger text-decoration-none">X</button>
+                                <button id="remove_cart-{{$key}}" type="button" class="btn btn-link text-danger text-decoration-none">X</button>
                             </form>
                         </th>
                     </tr>

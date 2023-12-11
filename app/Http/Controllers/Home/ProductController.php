@@ -45,6 +45,9 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        $product->loadCount(['comments' => function(Builder $query){
+            $query->where('approved' , 1);
+        }])->loadAvg('rates' , 'rate');
         return view('home.product' , compact('product'));
     }
 
@@ -55,7 +58,7 @@ class ProductController extends Controller
             $query->whereIn('id' , $request->variations);
         } , count($request->variations))->first();
 
-        if($sku->code !== null && $sku->quantity > 0)
+        if($sku && $sku->code !== null && $sku->quantity > 0)
         {
             if($sku->sale_price !== null && $sku->date_on_sale_from < Carbon::now() && $sku->date_on_sale_to > Carbon::now())
             {

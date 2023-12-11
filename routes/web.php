@@ -5,7 +5,9 @@ use App\Http\Controllers\Admin\AttributeOptionController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductRateController;
+use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Home\CartController;
 use App\Http\Controllers\Home\CommentController as CommentHomeController;
 use App\Http\Controllers\Admin\PermissionController;
@@ -64,6 +66,14 @@ Route::prefix('/admin')-> name('admin.')-> group(function (){
     Route::get('/comments/approve/{comment}' , [CommentController::class , 'changeApprove'])->name('comments.approve');
     Route::get('/rates/index' , [ProductRateController::class , 'index'])->name('rates.index');
     Route::delete('/rates/destroy/{product_rate}' , [ProductRateController::class , 'destroy'])->name('rates.destroy');
+
+    Route::get('/orders/index' , [OrderController::class , 'index'])->name('orders.index');
+    Route::get('/orders/show/{order}' , [OrderController::class , 'show'])->name('orders.show');
+    Route::delete('/orders/destroy/{order}' , [OrderController::class , 'destroy'])->name('orders.destroy');
+
+    Route::get('/transactions/show/{transaction}' , [TransactionController::class , 'show'])->name('transactions.show');
+    Route::get('/transactions/index' , [TransactionController::class , 'index'])->name('transactions.index');
+    Route::delete('/transactions/destroy/{transaction}' , [TransactionController::class , 'destroy'])->name('transactions.destroy');
 });
 
 Route::name('home.')->group(function (){

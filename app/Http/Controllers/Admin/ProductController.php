@@ -7,6 +7,7 @@ use App\Models\Attribute;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Tag;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -28,7 +29,7 @@ class ProductController extends Controller
     public function create()
     {
         $tags = Tag::all();
-        $categories = Category::where('parent_id' , '!==' , 0)->get();
+        $categories = Category::where('parent_id' , '!=' , 0)->get();
         $attributes = Attribute::all();
         return view('admin.products.create' , compact('categories' , 'tags' , 'attributes'));
     }
@@ -97,7 +98,7 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         $tags = Tag::all();
-        $categories = Category::where('parent_id' , '!==' , 0)->get();
+        $categories = Category::where('parent_id' , '!=' , 0)->get();
         return view('admin.products.show' , compact('product' ,
             'categories' , 'tags'));
     }
@@ -108,7 +109,7 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $tags = Tag::all();
-        $categories = Category::where('parent_id' , '!==' , 0)->get();
+        $categories = Category::where('parent_id' , '!=' , 0)->get();
         return view('admin.products.edit' , compact('product' ,'categories' , 'tags'));
     }
 

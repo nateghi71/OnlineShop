@@ -80,6 +80,20 @@
                 <li class="mt-3 ps-3"><a class="text-decoration-none text-secondary" href="{{ route('admin.rates.index')}}">امتیازات</a> </li>
             </ul>
         </li>
+        <hr>
+        <li class="px-4 py-2">
+            <a href="#order-menu" data-bs-toggle="collapse" class="text-decoration-none text-primary d-flex justify-content-between">سفارشات <span> + </span></a>
+            <ul class="collapse list-unstyled" id="order-menu">
+                <li class="mt-3 ps-3"><a class="text-decoration-none text-secondary" href="{{ route('admin.orders.index')}}">سفارشات</a> </li>
+            </ul>
+        </li>
+        <hr>
+        <li class="px-4 py-2">
+            <a href="#transaction-menu" data-bs-toggle="collapse" class="text-decoration-none text-primary d-flex justify-content-between">تراکنش ها <span> + </span></a>
+            <ul class="collapse list-unstyled" id="transaction-menu">
+                <li class="mt-3 ps-3"><a class="text-decoration-none text-secondary" href="{{ route('admin.transactions.index')}}">تراکنش ها</a> </li>
+            </ul>
+        </li>
     </ul>
 </aside>
 

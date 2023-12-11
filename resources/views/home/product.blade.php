@@ -29,6 +29,7 @@
                         $('#quantity').val(1);
                         $('#sku_id').val(response.sku_id);
                         console.log(response.sku_id)
+
                         if(response.is_sale)
                         {
                             priceProduct = response.sale_price;
@@ -76,8 +77,8 @@
     <div class="bg-body-secondary w-100 py-2 ps-5">
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="" class="text-decoration-none">خانه</a></li>
-                <li class="breadcrumb-item"><a href="#" class="text-decoration-none">{{$product->category->name}}</a></li>
+                <li class="breadcrumb-item"><a href="{{route('home.index')}}" class="text-decoration-none">خانه</a></li>
+                <li class="breadcrumb-item"><a href="{{route('home.product.search.category' , ['category' =>$product->category->slug])}}" class="text-decoration-none">{{$product->category->name}}</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{{$product->name}}</li>
             </ol>
         </nav>
@@ -92,7 +93,7 @@
     <div class="col-md-4 p-0 border-end border-opacity-50">
         <div class="text-center my-3">
             <img src="{{url(env('PRODUCT_IMAGES_UPLOAD_PATH')) . '/' .  $product->images()->where('is_primary' , 1)->first()->image }}"
-            alt="{{$product->name}}" width="400" height="300">
+            alt="{{$product->name}}" width="300" height="300">
         </div>
         <div class="p-3 bg-body-secondary text-center" data-bs-spy="scroll" data-bs-offset="0">
             @foreach($product->images->where('is_primary' , 0) as $image)
@@ -105,7 +106,7 @@
         <div class="d-flex justify-content-between border-bottom border-opacity-50">
             <h3 class="py-3">{{$product->name}}</h3>
             <div class="py-3" dir="ltr">
-                @php $rating = 1.4; @endphp
+                @php $rating = $product->rates_avg_rate; @endphp
                 <span>
                 @foreach(range(1,5) as $i)
                     @if($rating >0)
@@ -120,8 +121,8 @@
                         @php $rating--; @endphp
                 @endforeach
                 </span><br>
-                <span>امتیاز : {{$rating}}</span><br>
-                <span>دیدگاه : {{$rating}}</span>
+                <span>امتیاز : {{$product->rates_avg_rate}}</span><br>
+                <span>دیدگاه : {{$product->comments_count}}</span>
             </div>
         </div>
 
@@ -172,23 +173,25 @@
                        href="{{route('home.compare.showPage' , ['product' => $product->id])}}">
                         مقایسه
                     </a>
-{{--                    @if(auth()->user()->wishlist()->where('id' , $product->id)->exists())--}}
-{{--                        <a class="btn btn-danger"--}}
-{{--                        href="{{route('home.wishlist.destroy' , ['product' => $product->id])}}">--}}
-{{--                            <i class="fa fa-heart-o" aria-hidden="true"></i>--}}
-{{--                        </a>--}}
-{{--                    @else--}}
-{{--                        <a class="btn btn-outline-danger"--}}
-{{--                           href="{{route('home.wishlist.add' , ['product' => $product->id])}}">--}}
-{{--                            <i class="fa fa-heart-o" aria-hidden="true"></i>--}}
-{{--                        </a>--}}
-{{--                    @endif--}}
+                    @if(auth()->check())
+                        @if(auth()->user()->wishlist()->where('id' , $product->id)->exists())
+                            <a class="btn btn-danger"
+                               href="{{route('home.wishlist.destroy' , ['product' => $product->id])}}">
+                                <i class="fa fa-heart-o" aria-hidden="true"></i>
+                            </a>
+                        @else
+                            <a class="btn btn-outline-danger"
+                               href="{{route('home.wishlist.add' , ['product' => $product->id])}}">
+                                <i class="fa fa-heart-o" aria-hidden="true"></i>
+                            </a>
+                        @endif
+                    @endif
                 </div>
             </div>
         </form>
 
 
-    <div class="ms-4">
+    <div class="ms-4 mb-3">
         <span>تگ ها : </span>
         @foreach($product->tags as $tag)
             <span class="badge bg-secondary mx-2">

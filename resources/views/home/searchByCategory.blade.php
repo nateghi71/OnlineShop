@@ -81,7 +81,7 @@
                     <h4> {{$attribute->name}} </h4>
                     <div>
                         <ul class="list-unstyled pb-2 m-0">
-                            @foreach($attribute->attributeOptions as $attributeOption)
+                            @foreach($attribute->attributeOptions()->groupBy('value')->get() as $attributeOption)
                                 <li class="px-5 py-2">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" value="{{ $attributeOption->value }}"
@@ -129,7 +129,7 @@
                     <div class="card mb-3">
                         <img class="card-img-top"
                              src="{{url(env('PRODUCT_IMAGES_UPLOAD_PATH') . $product->images()->where('is_primary' , 1)->first()->image)}}"
-                             alt="{{$product->name}}">
+                             alt="{{$product->name}}" height="250">
                         <div class="card-body text-center">
                             <a href="{{route('home.product.show' , ['product'=>$product->slug])}}" class="card-title text-decoration-none"><h5 class="text-start text-primary mb-3">{{$product->name}}</h5></a>
                             <p class="card-text text-danger d-flex justify-content-between">قیمت:<span>{{$product->delivery_amount}}</span></p>

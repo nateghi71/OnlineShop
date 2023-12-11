@@ -47,8 +47,17 @@ class Product extends Model
     {
         return $this->hasMany(Comment::class)->where('approved' , 1);
     }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 
     public function rates()
+    {
+        return $this->hasMany(ProductRate::class);
+    }
+
+    public function avregeRates()
     {
         return $this->hasMany(ProductRate::class);
     }
